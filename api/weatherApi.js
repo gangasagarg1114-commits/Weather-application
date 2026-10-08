@@ -17,7 +17,7 @@
 
 
     // OpenWeatherMap API key
-    const API_KEY = "YOUR_API_KEY";
+    const API_KEY = "2e68e17b919eba4c435541cc233b4844";
 
 
     // API ka common base URL
