@@ -1,5 +1,5 @@
 /* ===========================
-   Weather App - OpenWeatherMap API Integration
+   Weather App - UI Integration
 =========================== */
 
 // DOM ELEMENTS SELECTION
@@ -32,51 +32,13 @@ searchBtn.addEventListener("click", function () {
     getWeather(city);
 });
 
-// AUTOCOMPLETE CITIES LIST
-const cities = [
-  "Delhi",
-  "Mumbai",
-  "Kolkata",
-  "Chennai",
-  "Bengaluru",
-  "Hyderabad",
-  "Pune",
-  "Jaipur",
-  "Lucknow",
-  "London"
-];
-
-// LIVE INPUT SUGGESTION FILTER
-cityInput.addEventListener("input", function(){
-    const text = cityInput.value.toLowerCase();
-    const matches = cities.filter(function (city){
-        return city.toLowerCase().startsWith(text);
-    })
-    console.log(matches);
-
-    loadingEl.innerText = matches.join(", ");
-});
-
 // MAIN WEATHER FETCH FUNCTION (Current + 5-Day Forecast)
 async function getWeather(city) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${encodeURIComponent(city)}&appid=2e68e17b919eba4c435541cc233b4844`;
-    const link = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=2e68e17b919eba4c435541cc233b4844&units=metric`;
-    
     loadingEl.innerText = "Loading...";
     localStorage.setItem("lastCity", city);
 
     try {
-        const response = await fetch(url);
-        const response2 = await fetch(link);
-
-        if (!response.ok) {
-            throw new Error("City not found");
-        }
-
-        const data = await response.json();
-        const forecast = await response2.json();
-
-        console.log(data);
+        const { data, forecast } = await window.weatherApi.fetchWeatherData(city);
 
         // MAP FORECAST DATA TO 5 DAY CARDS
         const days = [day1, day2, day3, day4, day5];
