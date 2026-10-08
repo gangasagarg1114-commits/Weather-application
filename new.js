@@ -39,11 +39,9 @@ async function getWeather(city) {
 
     try {
         const { data, forecast } = await window.weatherApi.fetchWeatherData(city);
-
-        // MAP FORECAST DATA TO 5 DAY CARDS
         const days = [day1, day2, day3, day4, day5];
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < days.length; i++) {
             const item = forecast.list[i * 8];
 
             days[i].innerHTML = `
@@ -57,7 +55,6 @@ async function getWeather(city) {
         const condition = data.weather[0].main;
         changeBackground(condition);
 
-        // WEATHER ICON MAPPING BASED ON CONDITION
         if (condition === "Clouds") {
             weatherIcon.src = "images/cloudy.png";
         } else if (condition === "Clear") {
@@ -74,13 +71,11 @@ async function getWeather(city) {
             weatherIcon.src = "images/mist.png";
         }
 
-        // BIND CURRENT WEATHER DETAILS TO UI
         weatherEl.innerText = data.weather[0].description;
         tempEl.innerText = `${Math.round(data.main.temp)}°C`;
         windEl.innerHTML = `💨 ${data.wind.speed} m/s`;
         locationEl.innerText = data.name;
         humidityEl.innerHTML = `💧 ${data.main.humidity}%`;
-
     } catch (error) {
         alert(error.message);
     } finally {
@@ -89,8 +84,8 @@ async function getWeather(city) {
 }
 
 // KEYBOARD ENTER KEY PRESS EVENT LISTENER
-cityInput.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
+cityInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
         searchBtn.click();
     }
 });
